@@ -1,1 +1,2 @@
-# info664-finalproject
+## Pratt Info-664 Programming for Cultural Heritage
+This repository contains the files for the final project for PFCH, completed in the Spring 2021 semester.  This project is focused around the comic book industry and single issue sales data.
