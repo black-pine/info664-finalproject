@@ -54,7 +54,9 @@ with open('comicsData.csv', 'r') as comics:
 				'2018' : {'units' : 0, 'issues': 0, 'income' : 0},
 				'2019' : {'units' : 0, 'issues': 0, 'income' : 0},
 				'2020' : {'units' : 0, 'issues': 0, 'income' : 0},
-				'types' : {'oneShot' : 0, 'numOne' : 0,	'ongoing' : 0}
+				'types' : {'oneShot' : { 'count' : 0, 'revenue' : 0 }, 
+					'numOne' : { 'count' : 0, 'revenue' : 0 },	
+					'ongoing' : { 'count' : 0, 'revenue' : 0 }}
 			}
 		publisherSales[row['publisher']][row['year']]['income'] += salesIncome
 		publisherSales[row['publisher']][row['year']]['units'] += int(row['estimated sales'])
@@ -62,11 +64,14 @@ with open('comicsData.csv', 'r') as comics:
 			publisherSales[row['publisher']][row['year']]['issues'] += 1
 			# add issue type to count by publisher
 			if not row['issue']:
-				publisherSales[row['publisher']]['types']['oneShot'] += 1
+				publisherSales[row['publisher']]['types']['oneShot']['count'] += 1
+				publisherSales[row['publisher']]['types']['oneShot']['revenue'] += salesIncome
 			elif row['issue'] == '1':
-				publisherSales[row['publisher']]['types']['numOne'] += 1
+				publisherSales[row['publisher']]['types']['numOne']['count'] += 1
+				publisherSales[row['publisher']]['types']['numOne']['revenue'] += salesIncome
 			else:
-				publisherSales[row['publisher']]['types']['ongoing'] += 1
+				publisherSales[row['publisher']]['types']['ongoing']['count'] += 1
+				publisherSales[row['publisher']]['types']['ongoing']['revenue'] += salesIncome
 		
 		# add issue sales amount and issue number to total by series
 		if row['title'] not in seriesSales:
@@ -108,15 +113,31 @@ with open('publisherData.csv', 'w') as publisherInfo:
 			w.writerow(row)
 
 with open('issueTypeData.csv', 'w') as typeInfo:
-	typeHeader=['publisher', 'one shot', 'first issue', 'ongoing']
+	typeHeader=['publisher', 'one shot', 'first issue', 'ongoing', 'one shot rev', 'first rev', 'ongoing rev', 'one percent', 'first percent', 'ongoing percent', 'one rev percent', 'first rev percent', 'ongoing rev percent']
 	w = csv.DictWriter(typeInfo, fieldnames=typeHeader)
 	w.writeheader()
 	for pub in publisherSales:
+		totalIss = publisherSales[pub]['types']['oneShot']['count'] + publisherSales[pub]['types']['numOne']['count'] + publisherSales[pub]['types']['ongoing']['count']
+		if totalIss == 0:
+			totalIss = 1
+		totalRev = publisherSales[pub]['types']['oneShot']['revenue'] + publisherSales[pub]['types']['numOne']['revenue'] + publisherSales[pub]['types']['ongoing']['revenue']
+		if totalRev == 0:
+			totalRev = 1
 		row = {
 			'publisher' : pub,
-			'one shot' : publisherSales[pub]['types']['oneShot'],
-			'first issue' : publisherSales[pub]['types']['numOne'],
-			'ongoing' : publisherSales[pub]['types']['ongoing']
+			'one shot' : publisherSales[pub]['types']['oneShot']['count'],
+			'first issue' : publisherSales[pub]['types']['numOne']['count'],
+			'ongoing' : publisherSales[pub]['types']['ongoing']['count'],
+			'one shot rev' : publisherSales[pub]['types']['oneShot']['revenue'],
+			'first rev' : publisherSales[pub]['types']['numOne']['revenue'],
+			'ongoing rev' : publisherSales[pub]['types']['ongoing']['revenue'],
+			'one percent' : (publisherSales[pub]['types']['oneShot']['count'] / totalIss) * 100,
+			'first percent' : (publisherSales[pub]['types']['numOne']['count'] / totalIss) * 100,
+			'ongoing percent' : (publisherSales[pub]['types']['ongoing']['count'] / totalIss) * 100,
+			'one rev percent' : (publisherSales[pub]['types']['oneShot']['revenue'] / totalRev) * 100,
+			'first rev percent' : (publisherSales[pub]['types']['numOne']['revenue'] / totalRev) * 100,
+			'ongoing rev percent' : (publisherSales[pub]['types']['ongoing']['revenue'] / totalRev) * 100
+			
 		}
 		w.writerow(row)
 
@@ -140,12 +161,16 @@ with open('reorderData.csv', 'w') as reorderInfo:
 		w.writerow(reorders[item])
 
 with open('monthlyData.csv', 'w') as monthlyInfo:
-	monthlyHeader=['month', 'income']
+	monthlyHeader=['month', 'income', 'avg']
 	w = csv.DictWriter(monthlyInfo, fieldnames=monthlyHeader)
 	w.writeheader()
 	for month in monthlySales:
+		temp = 17
+		if month == 3:
+			temp = 18
 		row = {
 			'month' : month,
-			'income' : monthlySales[month]
+			'income' : monthlySales[month],
+			'avg' : monthlySales[month] / temp
 		}
 		w.writerow(row)
