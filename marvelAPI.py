@@ -9,8 +9,8 @@ titlePattern = re.compile(r'(.*)\s\(')
 
 baseURL = 'https://gateway.marvel.com/'
 reqURL = baseURL + '/v1/public/comics'
-pubkey = 'ce0706691dc3583b90f39fd398cadf77'
-pvtkey = '73be6d4a9e7fd520169cef87b17c1aa5e81b74e5'
+pubkey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+pvtkey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 ts = time.time()
 hashval = f"{ts}{pvtkey}{pubkey}"
 hashkey = hashlib.md5(hashval.encode()).hexdigest()
