@@ -15,6 +15,12 @@ def deltaRank(deltaDict, itemCode):
 	rank += 1
 	return rank
 
+# list of dictionaries
+	# dictionary key: 'year' ; value: year (4-digit)
+	# dictionary key: 'month' ; value: month (numeric)
+	# dictionary keys: 'topIss', 'topNumOne', 'topReord', & 'topDelta' ; value: dictionary
+		# dictionary key: 'data' ; value: dictionary - full row of issue data from "comicsData.csv"
+		# dictionary key: 'rank' ; value: overall rank (considering non-Marvel comics) within the top type
 marvelData = []
 
 # comicsData.csv headers: 'year', 'month', 'quantity rank', 'item code', 'price', 'publisher', 'title', 'issue', 'reorder', 'estimated sales', 'delta'

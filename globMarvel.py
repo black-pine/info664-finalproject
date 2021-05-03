@@ -8,8 +8,8 @@ import glob
 
 # dictionary key: creator name
 # dictionary value: list of dictionaries
-# 		dictionary key: 'role' ; value: creator's role (e.g. writer, penciller, inker)
-# 		dictionary key: 'issue' ; value: title of comic
+	# dictionary key: 'role' ; value: creator's role (e.g. writer, penciller, inker)
+	# dictionary key: 'issue' ; value: title of comic
 all_creators = {}
 # dictionary key: character name
 # dictinoary value: list of comic titles

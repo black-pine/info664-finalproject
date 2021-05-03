@@ -9,15 +9,34 @@ import csv
 with open('comicsData.csv', 'r') as comics:
 	reader = csv.DictReader(comics)
 
-	# Track / Results:
-	# Overall sales count per publisher (by year)
-	# Income by title (including issue count)
-	# Percentage of income from first issues by publisher
-	# Top reordered items
-	# Most lucrative month
+	# dictionary key: publisher name
+	# dictionary value: dictionary
+		# dictionary key: year (values 2003-2020) ; value: dictionary
+			# dictionary key: 'units' ; value: total units sold across all comics that month
+			# dictionary key: 'issues' ; value: number of comics sold that month
+			# dictionary key: 'income' ; value: total monthly revenue across all comics
+		# dictionary key: 'types' ; value: dictionary
+			# dictionary keys: 'oneShot', 'numOne', & 'ongoing' ; value: dictionary
+				# dictionary key: 'count' ; value: number of comics of that type
+				# dictionary key: 'revenue' ; value: total revenue of comics of that type
 	publisherSales = {}
+
+	# dictionary key: title of series
+	# dictionary value: dictionary
+		# dictionary key: 'issues' ; value: set of issue numbers in the series
+		# dictionary key: 'income' ; value: total revenue across all issues in the series
 	seriesSales = {}
+
+	# dictionary key: Diamond Code
+	# dictionary value: dictionary
+		# dictionary key: 'series' ; value: title of comic
+		# dictionary key: 'issue' ; value: issue number of comic
+		# dictionary key: 'count' ; value: number of times reordered
+		# dictionary key: 'units' ; value: total number of units reordered
 	reorders = {}
+	
+	# dictionary key: month number
+	# dictionary value: total revenue across all publishers & years for that month
 	monthlySales = {
 		'1' : 0,
 		'2' : 0,
