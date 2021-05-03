@@ -1,3 +1,6 @@
+# This file webscrapes data from http://comicbookpage.com/MayoReport/TopComics.php
+# This file generates "comicsData.csv" saved to the same directory as this file
+
 import requests
 from bs4 import BeautifulSoup
 import re
